@@ -57,6 +57,7 @@ public class Menu : App
 
         for (int i = 0; i < 3; i++)
         {
+            
             Machine currMachine = allMachines[generator.Next(0, 1)];
             System.Console.WriteLine(currMachine.name);
             RectangleF rect = DrawPiece(new RectangleF(1250, 100, 200, 200), currMachine.atack, currMachine.health, currMachine.experience, currMachine.tier, true, currMachine.name);
