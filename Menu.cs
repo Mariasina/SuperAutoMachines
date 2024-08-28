@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Windows.Forms;
 
 
@@ -8,38 +11,81 @@ public class Menu : App
 {
     bool fundiu = false;
     bool clicked = false;
-    RectangleF rect1 = RectangleF.Empty;
-    RectangleF rect2 = RectangleF.Empty;
-    RectangleF rect3 = RectangleF.Empty;
-    List<Machine> allMachines;
+    bool storeMouseDown = false;
+    bool needGenerated = true;
+    RectangleF rectEmpty = RectangleF.Empty;
+    List<Machine> allMachines = new();
+    List<Machine> yourTeam = new() { null, null, null, null, null };
+    Machine[] store = new Machine[3];
+    RectangleF[] storeRects = new RectangleF[3];
+
+    public Menu()
+    {
+        GenerateStore();
+        storeRects[0] = new RectangleF(1250, 100, 200, 200);
+        storeRects[1] = new RectangleF(1500, 100, 200, 200);
+        storeRects[2] = new RectangleF(1750, 100, 200, 200);
+    }
+
     public override void OnFrame(bool isDown, PointF cursor)
     {
-        AddAllMachines();
-        GenerateStore();
+        //Your Team
+        DrawText("Your Team", Color.Black, new RectangleF(150, 20, 400, 50));
 
-        if (rect1.Contains(cursor) && rect2.Contains(cursor) && !isDown)
-            fundiu = true;
+        for (int i = 0; i < 3; i++)
+            CheckColisionEmpty(isDown, cursor, storeRects[i], i);
+
+        int teamCountX = 50;
+        int teamCountY = 100;
+        foreach (var item in yourTeam)
+        {
+            if (item != null)
+                DrawPiece(new RectangleF(teamCountX, teamCountY, 200, 200), item.atack, item.health, item.experience, item.tier, item.name);
+            else DrawEmpty(new RectangleF(teamCountX, teamCountY, 200, 200));
+
+            teamCountX += 250;
+            if (teamCountX > 550)
+            {
+                teamCountX = 170;
+                teamCountY = 400;
+            }
+        }
 
         if (!fundiu)
         {
-            DrawText("Your Team", Color.Black, new RectangleF(150, 20, 400, 50));
-            rect1 = DrawPiece(new RectangleF(50, 100, 200, 200), 1, 3, 1, 1, true, "CNC");
-            rect2 = DrawPiece(new RectangleF(300, 100, 200, 200), 2, 4, 2, 1, true, "CNC");
-            rect3 = DrawPiece(new RectangleF(550, 100, 200, 200), 2, 4, 2, 1, true, "CNC");
-
-            DrawText("Store", Color.Black, new RectangleF(1360, 20, 400, 50));
-            // rect1 = DrawPiece(new RectangleF(1250, 100, 200, 200), 1, 3, 1, 1, true, "CNC");
-            // rect1 = DrawPiece(new RectangleF(1500, 100, 200, 200), 1, 3, 1, 1, true, "CNC");
-            // rect2 = DrawPiece(new RectangleF(1750, 100, 200, 200), 2, 4, 2, 1, true, "CNC");
+            // DrawEmpty(new RectangleF(50, 100, 200, 200));
+            // DrawEmpty(new RectangleF(300, 100, 200, 200));
+            // DrawEmpty(new RectangleF(550, 100, 200, 200));
+            // DrawEmpty(new RectangleF(160, 400, 200, 200));
+            // DrawEmpty(new RectangleF(410, 400, 200, 200));
         }
         else
         {
-            DrawPiece(new RectangleF(50, 50, 200, 200), 3, 5, 3, 1, true, "CNC");
+            DrawPiece(new RectangleF(50, 50, 200, 200), 3, 5, 3, 1, "CNC");
         }
+
+        //Store
+        DrawText("Store", Color.Black, new RectangleF(1360, 20, 400, 50));
+
+        if (needGenerated)
+        {
+            GenerateStore();
+            needGenerated = false;
+        }
+
+        var newStoreMouseDown = DrawButton(new RectangleF(1450, 400, 200, 100), "Atualizar");
+        if (!newStoreMouseDown && storeMouseDown)
+            needGenerated = true;
+        storeMouseDown = newStoreMouseDown;
+
+        DrawEmpty(new RectangleF(1250, 100, 200, 200));
+        for (int i = 0; i < 3; i++)
+            storeRects[i] = DrawPiece(storeRects[i], store[i].atack, store[i].health, store[i].experience, store[i].tier, store[i].name);
+
 
         if (!clicked)
         {
-            clicked = DrawButton(new RectangleF(400, 400, 200, 100), "Iniciar");
+            clicked = DrawButton(new RectangleF(850, 900, 200, 100), "Iniciar");
             if (clicked)
                 MessageBox.Show("Clicou");
         }
@@ -49,18 +95,28 @@ public class Menu : App
     {
         allMachines.Add(new Hammer());
         allMachines.Add(new Screwdriver());
+        allMachines.Add(new Tredmill());
     }
 
     public void GenerateStore()
     {
+        AddAllMachines();
         Random generator = new Random();
 
         for (int i = 0; i < 3; i++)
-        {
-            
-            Machine currMachine = allMachines[generator.Next(0, 1)];
-            System.Console.WriteLine(currMachine.name);
-            RectangleF rect = DrawPiece(new RectangleF(1250, 100, 200, 200), currMachine.atack, currMachine.health, currMachine.experience, currMachine.tier, true, currMachine.name);
+            store[i] = allMachines[generator.Next(0, 3)];
+    }
+
+    public void CheckColisionEmpty(bool isDown, PointF cursor, RectangleF rect, int storeIndex){
+        if(rect.Contains(cursor) && rectEmpty.Contains(cursor) && !isDown){
+            for (int i = 0; i < yourTeam.Count(); i++)
+            {
+                if(yourTeam[i] == null){
+                    yourTeam[i] = store[storeIndex];
+                    store[storeIndex] = null;
+                    break;
+                }
+            }
         }
     }
 }

@@ -100,7 +100,6 @@ public abstract class App
 
     public RectangleF DrawPiece(RectangleF location,
         int attack, int life, int experience, int tier,
-        bool isGraspable,
         string name, Bitmap image = null)
     {
         float realWidth = .6f * location.Height;
@@ -165,6 +164,17 @@ public abstract class App
         grabDesloc = new PointF(cursor.X - grabStart.Value.X, cursor.Y - grabStart.Value.Y);
 
         return rect;
+    }
+
+    public bool DrawEmpty(RectangleF location){
+        float realWidth = .6f * location.Height;
+        var realSize = new SizeF(realWidth, location.Height);
+
+        var position = new PointF(location.X, location.Y);
+        var rect = new RectangleF(position, realSize);
+
+        g.FillRectangle(Brushes.LightGray, rect);
+        return rect.Contains(cursor);
     }
 
     public bool DrawButton(RectangleF location, string text)
