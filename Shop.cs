@@ -9,6 +9,8 @@ using System.Windows.Forms;
 
 
 public class Shop{
+    private App app;
+    
     bool fundiu = false;
     bool clicked = false;
     bool storeMouseDown = false;
@@ -20,21 +22,21 @@ public class Shop{
     RectangleF[] currentStoreRects = new RectangleF[3];
     int selectedIndex = -1;
 
-    public Shop()
+    public Shop(App app)
     {
-
+        this.app = app;
         GenerateStore();
         storeRects[0] = new RectangleF(1250, 100, 200, 200);
         storeRects[1] = new RectangleF(1500, 100, 200, 200);
         storeRects[2] = new RectangleF(1750, 100, 200, 200);
     }
-    public void startShop(bool isDown, PointF cursor, int screenId, List<Machine> yourTeam, Player player)
+    public int startShop(bool isDown, PointF cursor, int screenId, List<Machine> yourTeam, Player player)
     {
-        DrawText("Moedas: " + player.coins.ToString(), Color.Black, new RectangleF(700, 20, 400, 10));
-        DrawText("Vidas: " + player.health.ToString(), Color.Black, new RectangleF(850, 20, 400, 10));
+        app.DrawText("Moedas: " + player.coins.ToString(), Color.Black, new RectangleF(700, 20, 400, 10));
+        app.DrawText("Vidas: " + player.health.ToString(), Color.Black, new RectangleF(850, 20, 400, 10));
 
         //Your Team
-        DrawText("Your Team", Color.Black, new RectangleF(150, 20, 400, 50));
+        app.DrawText("Seu time", Color.Black, new RectangleF(150, 20, 400, 50));
 
         int teamCountX = 50;
         int teamCountY = 100;
@@ -43,13 +45,12 @@ public class Shop{
             var item = yourTeam[i];
             var pieceRect = new RectangleF(teamCountX, teamCountY, 200, 200);
             if (item != null)
-                DrawPiece(pieceRect, item.atack, item.health, item.experience, item.tier, item.name);
-            else DrawEmpty(pieceRect);
+                app.DrawPiece(pieceRect, item.atack, item.health, item.experience, item.tier, item.name);
+            else app.DrawEmpty(pieceRect);
 
             if (player.coins >= 3)
             {
                 CheckColisionEmpty(isDown, cursor, pieceRect, yourTeam, player);
-
             }
 
             teamCountX += 250;
@@ -70,11 +71,11 @@ public class Shop{
         }
         else
         {
-            DrawPiece(new RectangleF(50, 50, 200, 200), 3, 5, 3, 1, "CNC");
+            app.DrawPiece(new RectangleF(50, 50, 200, 200), 3, 5, 3, 1, "CNC");
         }
 
         //Store
-        DrawText("Store", Color.Black, new RectangleF(1360, 20, 400, 50));
+        app.DrawText("Loja", Color.Black, new RectangleF(1360, 20, 400, 50));
 
         if (needGenerated)
         {
@@ -84,7 +85,7 @@ public class Shop{
 
         if (player.coins > 0)
         {
-            var newStoreMouseDown = DrawButton(new RectangleF(1450, 400, 200, 100), "Atualizar");
+            var newStoreMouseDown = app.DrawButton(new RectangleF(1450, 400, 200, 100), "Atualizar");
             if (!newStoreMouseDown && storeMouseDown)
             {
                 needGenerated = true;
@@ -94,17 +95,17 @@ public class Shop{
         }
         else
         {
-            var newStoreMouseDown = DrawButton(new RectangleF(1450, 400, 200, 100), "Sem moedas suficientes");
+            var newStoreMouseDown = app.DrawButton(new RectangleF(1450, 400, 200, 100), "Sem moedas suficientes");
         }
 
         selectedIndex = -1;
         for (int i = 0; i < 3; i++)
         {
-            DrawEmpty(storeRects[i]);
+            app.DrawEmpty(storeRects[i]);
             if (store[i] == null)
                 continue;
 
-            currentStoreRects[i] = DrawPiece(storeRects[i], store[i].atack, store[i].health, store[i].experience, store[i].tier, store[i].name);
+            currentStoreRects[i] = app.DrawPiece(storeRects[i], store[i].atack, store[i].health, store[i].experience, store[i].tier, store[i].name);
             if (currentStoreRects[i].Location != storeRects[i].Location)
                 selectedIndex = i;
         }
@@ -112,11 +113,12 @@ public class Shop{
 
         if (!clicked)
         {
-            clicked = DrawButton(new RectangleF(850, 900, 200, 100), "Iniciar");
+            clicked = app.DrawButton(new RectangleF(850, 900, 200, 100), "Iniciar");
             if (clicked)
-                screenId = 1;
+                return 1;
                 
         }
+        return 0;
     }
 
     public void AddAllMachines()

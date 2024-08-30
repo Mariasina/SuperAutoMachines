@@ -27,4 +27,4 @@ C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-window
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.pdb
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.genruntimeconfig.cache
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\ref\SAM.dll
-c:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.sourcelink.json
+c:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.csproj.AssemblyReference.cache
