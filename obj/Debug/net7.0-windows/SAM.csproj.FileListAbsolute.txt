@@ -18,7 +18,6 @@ C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\bin\Debug\net7.0-window
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\bin\Debug\net7.0-windows\SAM.runtimeconfig.json
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\bin\Debug\net7.0-windows\SAM.dll
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\bin\Debug\net7.0-windows\SAM.pdb
-C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.csproj.AssemblyReference.cache
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.AssemblyInfoInputs.cache
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.AssemblyInfo.cs
@@ -28,3 +27,4 @@ C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-window
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.pdb
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.genruntimeconfig.cache
 C:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\ref\SAM.dll
+c:\Users\disrct\Desktop\Maria Carolina\SuperAutoMachines\obj\Debug\net7.0-windows\SAM.sourcelink.json

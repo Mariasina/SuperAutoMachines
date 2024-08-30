@@ -177,6 +177,17 @@ public abstract class App
         return rect.Contains(cursor);
     }
 
+    public bool DrawStoreEmpty(RectangleF location){
+        float realWidth = .6f * location.Height;
+        var realSize = new SizeF(realWidth, location.Height);
+
+        var position = new PointF(location.X, location.Y);
+        var rect = new RectangleF(position, realSize);
+
+        g.FillRectangle(Brushes.LightCoral, rect);
+        return rect.Contains(cursor);
+    }
+
     public bool DrawButton(RectangleF location, string text)
     {
         if (location.Contains(cursor))
