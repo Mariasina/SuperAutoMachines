@@ -51,8 +51,9 @@ public class Game
 
     public void Atack(){
         while(!CheckNull(yourRoundTeam) && !CheckNull(enemyRoundTeam)){
-            -
+            
         }
+        throw new NotImplementedException();
     }
 
     public void GenerateEnemy()
